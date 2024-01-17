@@ -56,6 +56,10 @@ open class URLSession: NSObject {
     _guts.dataTask(with: request, completionHandler: completionHandler)
   }
 
+  public func dataTask(with request: URLRequest) -> URLSessionDataTask {
+    _guts.dataTask(with: request)
+  }
+
   public func invalidateAndCancel() {
     _guts.invalidateAndCancel()
   }

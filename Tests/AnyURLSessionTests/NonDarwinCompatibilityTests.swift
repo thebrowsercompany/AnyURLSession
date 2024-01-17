@@ -12,6 +12,7 @@ final class FakeGuts: URLSessionGuts {
   var queue: OperationQueue?
 
   var _uploadTaskCalled: (() -> Void)?
+  var _dataTaskWithClosureCalled: (() -> Void)?
   var _dataTaskCalled: (() -> Void)?
   var _invalidateAndCancelledCalled: (() -> Void)?
   var _finishTasksAndInvalidateCalled: (() -> Void)?
@@ -27,6 +28,11 @@ final class FakeGuts: URLSessionGuts {
   }
 
   func dataTask(with request: URLRequest, completionHandler: @escaping @Sendable (Data?, URLResponse?, (any Error)?) -> Void) -> URLSessionDataTask {
+    _dataTaskWithClosureCalled?()
+    return URLSessionDataTask()
+  }
+
+  func dataTask(with request: URLRequest) -> URLSessionDataTask {
     _dataTaskCalled?()
     return URLSessionDataTask()
   }
@@ -83,6 +89,7 @@ final class NonDarwinCompatibilityTests: XCTestCase {
     let testDelegate = TestDelegate()
     let testQueue = OperationQueue()
 
+    let dataTaskWithClosureCalled = LockIsolated(false)
     let dataTaskCalled = LockIsolated(false)
     let uploadTaskCalled = LockIsolated(false)
     let invalidateAndCancelCalled = LockIsolated(false)
@@ -91,6 +98,10 @@ final class NonDarwinCompatibilityTests: XCTestCase {
     try await withDependencies({
       $0.gutsFactory = { (config, delegate, queue) in
         let fakeGuts = FakeGuts(configuration: config, delegate: delegate, delegateQueue: queue)
+
+        fakeGuts._dataTaskWithClosureCalled = {
+          dataTaskWithClosureCalled.setValue(true)
+        }
 
         fakeGuts._dataTaskCalled = {
           dataTaskCalled.setValue(true)
@@ -126,10 +137,14 @@ final class NonDarwinCompatibilityTests: XCTestCase {
 
       XCTAssertNotNil(guts.delegate as? TestDelegate)
       XCTAssertEqual(guts.queue, testQueue)
-      XCTAssertTrue(dataTaskCalled.value)
+      XCTAssertTrue(dataTaskWithClosureCalled.value)
       XCTAssertTrue(uploadTaskCalled.value)
       XCTAssertTrue(invalidateAndCancelCalled.value)
       XCTAssertTrue(finishTasksAndInvalidateCalled.value)
+
+      XCTAssertFalse(dataTaskCalled.value)
+      _ = session.dataTask(with: request)
+      XCTAssertTrue(dataTaskCalled.value)
     })
   }
 

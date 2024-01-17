@@ -17,6 +17,10 @@ final class MockGuts: URLSessionGuts {
     URLSessionDataTask()
   }
 
+  func dataTask(with request: URLRequest) -> URLSessionDataTask {
+    URLSessionDataTask()
+  }
+
   func invalidateAndCancel() {}
   func finishTasksAndInvalidate() {}
 }

@@ -10,6 +10,8 @@ import struct FoundationNetworking.URLRequest
 public protocol URLSessionGuts: Sendable {
   init(configuration: URLSessionConfiguration, delegate: URLSessionDelegate?, delegateQueue queue: OperationQueue?)
   func uploadTask(with request: URLRequest, fromFile file: URL, completionHandler: @escaping @Sendable (Data?, URLResponse?, (any Error)?) -> Void) -> URLSessionUploadTask
+
+  func dataTask(with request: URLRequest) -> URLSessionDataTask
   func dataTask(with request: URLRequest, completionHandler: @escaping @Sendable (Data?, URLResponse?, (any Error)?) -> Void) -> URLSessionDataTask
 
   func invalidateAndCancel()
