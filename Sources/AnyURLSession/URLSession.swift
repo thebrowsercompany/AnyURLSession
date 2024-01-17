@@ -19,14 +19,14 @@ extension URLSession {
 }
 
 extension URLSession {
-  public enum AuthChallengeDisposition : Int {
+  public enum AuthChallengeDisposition: Int {
     case useCredential
     case performDefaultHandling
     case cancelAuthenticationChallenge
     case rejectProtectionSpace
   }
 
-  public enum ResponseDisposition : Int {
+  public enum ResponseDisposition: Int {
     case cancel
     case allow
 
