@@ -3,17 +3,12 @@ import class Foundation.NSRecursiveLock
 
 // A lightweight copy/rebuild of the LockIsolated class from Concurrency Extras
 // https://github.com/pointfreeco/swift-concurrency-extras/blob/main/Sources/ConcurrencyExtras/LockIsolated.swift
-@dynamicMemberLookup
 public final class LockIsolated<Value>: @unchecked Sendable {
   private var _value: Value
   private let lock = NSRecursiveLock()
 
   public init(_ value: @autoclosure @Sendable () throws -> Value) rethrows {
     self._value = try value()
-  }
-
-  public subscript<Subject: Sendable>(dynamicMember keyPath: KeyPath<Value, Subject>) -> Subject {
-    self.lock.sync { self._value[keyPath: keyPath] }
   }
 
   public func withValue<T: Sendable>(_ operation: @Sendable (inout Value) throws -> T) rethrows -> T {
