@@ -8,7 +8,11 @@ import struct FoundationNetworking.URLRequest
 @testable import AnyURLSession
 
 final class MockGuts: URLSessionGuts {
-  init(configuration: URLSessionConfiguration, delegate: URLSessionDelegate?, delegateQueue queue: OperationQueue?) {}
+  var configuration: URLSessionConfiguration
+
+  init(configuration: URLSessionConfiguration, delegate: URLSessionDelegate?, delegateQueue queue: OperationQueue?) {
+    self.configuration = configuration
+  }
   func uploadTask(with request: URLRequest, fromFile file: URL, completionHandler: @escaping @Sendable (Data?, URLResponse?, (any Error)?) -> Void) -> URLSessionUploadTask {
     URLSessionUploadTask()
   }

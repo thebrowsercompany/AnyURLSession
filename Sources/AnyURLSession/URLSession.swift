@@ -39,6 +39,12 @@ extension URLSession {
 }
 
 open class URLSession: NSObject {
+  open var configuration: URLSessionConfiguration {
+    get {
+      _guts.configuration
+    }
+  }
+
   internal private(set) var _guts: URLSessionGuts
 
   public init(configuration: URLSessionConfiguration) {

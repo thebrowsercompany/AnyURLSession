@@ -8,6 +8,8 @@ import struct FoundationNetworking.URLRequest
 /// URLSessionGuts is responsible for doing the actual work when someone calls into a URLSession function that we've
 /// made available in this re-implementation.
 public protocol URLSessionGuts: Sendable {
+  var configuration: URLSessionConfiguration { get }
+
   init(configuration: URLSessionConfiguration, delegate: URLSessionDelegate?, delegateQueue queue: OperationQueue?)
   func uploadTask(with request: URLRequest, fromFile file: URL, completionHandler: @escaping @Sendable (Data?, URLResponse?, (any Error)?) -> Void) -> URLSessionUploadTask
 

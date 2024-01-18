@@ -11,6 +11,8 @@ final class FakeGuts: URLSessionGuts {
   weak var delegate: URLSessionDelegate?
   var queue: OperationQueue?
 
+  var configuration: URLSessionConfiguration
+
   var _uploadTaskCalled: (() -> Void)?
   var _dataTaskWithClosureCalled: (() -> Void)?
   var _dataTaskCalled: (() -> Void)?
@@ -18,6 +20,7 @@ final class FakeGuts: URLSessionGuts {
   var _finishTasksAndInvalidateCalled: (() -> Void)?
 
   init(configuration: URLSessionConfiguration, delegate: URLSessionDelegate?, delegateQueue queue: OperationQueue?) {
+    self.configuration = configuration
     self.delegate = delegate
     self.queue = queue
   }
