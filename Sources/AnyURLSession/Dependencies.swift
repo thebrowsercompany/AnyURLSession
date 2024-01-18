@@ -2,11 +2,11 @@
 import class Foundation.OperationQueue
 import class FoundationNetworking.URLSessionConfiguration
 
-struct Dependencies: Sendable {
-  static let current = LockIsolated(Dependencies?.none)
+public struct Dependencies: Sendable {
+  public static let current = LockIsolated(Dependencies?.none)
 
   /// Used to construct the internals of the re-implemented URLSession
   /// If you use this package you *must* set this otherwise you will crash.
-  var gutsFactory: @Sendable (URLSessionConfiguration, URLSessionDelegate?, OperationQueue?) -> URLSessionGuts
+  public var gutsFactory: @Sendable (URLSessionConfiguration, URLSessionDelegate?, OperationQueue?) -> URLSessionGuts
 }
 #endif
