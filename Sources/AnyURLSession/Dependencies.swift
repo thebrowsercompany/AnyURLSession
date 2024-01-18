@@ -8,5 +8,9 @@ public struct Dependencies: Sendable {
   /// Used to construct the internals of the re-implemented URLSession
   /// If you use this package you *must* set this otherwise you will crash.
   public var gutsFactory: @Sendable (URLSessionConfiguration, URLSessionDelegate?, OperationQueue?) -> URLSessionGuts
+
+  public init(gutsFactory: @escaping @Sendable (URLSessionConfiguration, URLSessionDelegate?, OperationQueue?) -> URLSessionGuts) {
+    self.gutsFactory = gutsFactory
+  }
 }
 #endif
