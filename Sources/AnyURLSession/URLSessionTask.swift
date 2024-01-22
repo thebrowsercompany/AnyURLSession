@@ -5,8 +5,8 @@ import class Foundation.NSObject
 // https://github.com/apple/swift-corelibs-foundation/blob/main/Sources/FoundationNetworking/URLSession/URLSessionTask.swift\
 open class URLSessionTask: NSObject {
   open var state: URLSessionTask.State = .suspended
-  public func resume() {}
-  public func cancel() {}
+  open func resume() {}
+  open func cancel() {}
 }
 
 extension URLSessionTask {

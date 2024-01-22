@@ -50,27 +50,28 @@ open class URLSession: NSObject {
   public init(configuration: URLSessionConfiguration) {
     _guts = Dependencies.current.value!.gutsFactory(configuration, nil, nil)
   }
+
   public init(configuration: URLSessionConfiguration, delegate: URLSessionDelegate?, delegateQueue queue: OperationQueue?) {
     _guts = Dependencies.current.value!.gutsFactory(configuration, delegate, queue)
   }
 
-  public func uploadTask(with request: URLRequest, fromFile file: URL, completionHandler: @escaping @Sendable (Data?, URLResponse?, (any Error)?) -> Void) -> URLSessionUploadTask {
+  open func uploadTask(with request: URLRequest, fromFile file: URL, completionHandler: @escaping @Sendable (Data?, URLResponse?, (any Error)?) -> Void) -> URLSessionUploadTask {
     _guts.uploadTask(with: request, fromFile: file, completionHandler: completionHandler)
   }
 
-  public func dataTask(with request: URLRequest, completionHandler: @escaping @Sendable (Data?, URLResponse?, (any Error)?) -> Void) -> URLSessionDataTask {
+  open func dataTask(with request: URLRequest, completionHandler: @escaping @Sendable (Data?, URLResponse?, (any Error)?) -> Void) -> URLSessionDataTask {
     _guts.dataTask(with: request, completionHandler: completionHandler)
   }
 
-  public func dataTask(with request: URLRequest) -> URLSessionDataTask {
+  open func dataTask(with request: URLRequest) -> URLSessionDataTask {
     _guts.dataTask(with: request)
   }
 
-  public func invalidateAndCancel() {
+  open func invalidateAndCancel() {
     _guts.invalidateAndCancel()
   }
 
-  public func finishTasksAndInvalidate() {
+  open func finishTasksAndInvalidate() {
     _guts.finishTasksAndInvalidate()
   }
 }

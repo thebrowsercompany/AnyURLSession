@@ -5,7 +5,17 @@ import class FoundationNetworking.URLSessionConfiguration
 import class FoundationNetworking.URLResponse
 import struct FoundationNetworking.URLRequest
 
-@testable import AnyURLSession
+import AnyURLSession
+
+final class MockGutsSessionTask: URLSessionTask {
+  override func resume() {
+    // Do nothing, but make sure we can override this
+  }
+
+  override func cancel() {
+    // Do nothing, but make sure we can override this
+  }
+}
 
 final class MockGuts: URLSessionGuts {
   var configuration: URLSessionConfiguration
