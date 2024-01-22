@@ -7,13 +7,26 @@ import struct FoundationNetworking.URLRequest
 
 import AnyURLSession
 
-final class MockGutsSessionTask: URLSessionTask {
+final class MockGutsSessionUploadTask: URLSessionUploadTask {
+  private var _state: URLSessionTask.State = .suspended
+
+  override var state: URLSessionTask.State {
+    get {
+      return _state
+    }
+  }
   override func resume() {
     // Do nothing, but make sure we can override this
+    _state = .running
   }
 
   override func cancel() {
     // Do nothing, but make sure we can override this
+    _state = .completed
+  }
+
+  func _updateInternalState(new: URLSessionTask.State) {
+    _state = new
   }
 }
 
@@ -24,7 +37,10 @@ final class MockGuts: URLSessionGuts {
     self.configuration = configuration
   }
   func uploadTask(with request: URLRequest, fromFile file: URL, completionHandler: @escaping @Sendable (Data?, URLResponse?, (any Error)?) -> Void) -> URLSessionUploadTask {
-    URLSessionUploadTask()
+    let task = MockGutsSessionUploadTask()
+    task._updateInternalState(new: .canceling)
+
+    return task
   }
 
   func dataTask(with request: URLRequest, completionHandler: @escaping @Sendable (Data?, URLResponse?, (any Error)?) -> Void) -> URLSessionDataTask {

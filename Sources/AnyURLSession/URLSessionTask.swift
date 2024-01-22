@@ -4,7 +4,7 @@ import class Foundation.NSObject
 // Reimplemented interfaces for URLSession that will allow for stubbing/subclassing
 // https://github.com/apple/swift-corelibs-foundation/blob/main/Sources/FoundationNetworking/URLSession/URLSessionTask.swift\
 open class URLSessionTask: NSObject {
-  open var state: URLSessionTask.State = .suspended
+  open private(set) var state: URLSessionTask.State = .suspended
   open func resume() {}
   open func cancel() {}
 }
