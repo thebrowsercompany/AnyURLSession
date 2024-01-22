@@ -17,12 +17,10 @@ final class MockGutsSessionUploadTask: URLSessionUploadTask {
   }
   override func resume() {
     // Do nothing, but make sure we can override this
-    _state = .running
   }
 
   override func cancel() {
     // Do nothing, but make sure we can override this
-    _state = .completed
   }
 
   func _updateInternalState(new: URLSessionTask.State) {
@@ -38,7 +36,6 @@ final class MockGuts: URLSessionGuts {
   }
   func uploadTask(with request: URLRequest, fromFile file: URL, completionHandler: @escaping @Sendable (Data?, URLResponse?, (any Error)?) -> Void) -> URLSessionUploadTask {
     let task = MockGutsSessionUploadTask()
-    task._updateInternalState(new: .canceling)
 
     return task
   }
