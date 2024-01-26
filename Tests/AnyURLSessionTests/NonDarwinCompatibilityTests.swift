@@ -9,6 +9,7 @@ import struct FoundationNetworking.URLRequest
 
 final class FakeGuts: URLSessionGuts {
   weak var delegate: URLSessionDelegate?
+  weak var enclosingSession: URLSession?
   var queue: OperationQueue?
 
   var configuration: URLSessionConfiguration
@@ -18,6 +19,7 @@ final class FakeGuts: URLSessionGuts {
   var _dataTaskCalled: (() -> Void)?
   var _invalidateAndCancelledCalled: (() -> Void)?
   var _finishTasksAndInvalidateCalled: (() -> Void)?
+  var _updateInternalSessionCalled: (() -> Void)?
 
   init(configuration: URLSessionConfiguration, delegate: URLSessionDelegate?, delegateQueue queue: OperationQueue?) {
     self.configuration = configuration
@@ -46,6 +48,11 @@ final class FakeGuts: URLSessionGuts {
 
   func finishTasksAndInvalidate() {
     _finishTasksAndInvalidateCalled?()
+  }
+
+  func updateInternalSession(_ session: URLSession) {
+    enclosingSession = session
+    _updateInternalSessionCalled?()
   }
 }
 
@@ -97,6 +104,7 @@ final class NonDarwinCompatibilityTests: XCTestCase {
     let uploadTaskCalled = LockIsolated(false)
     let invalidateAndCancelCalled = LockIsolated(false)
     let finishTasksAndInvalidateCalled = LockIsolated(false)
+    let updateInternalSessionCalled = LockIsolated(false)
 
     try await withDependencies({
       $0.gutsFactory = { (config, delegate, queue) in
@@ -120,6 +128,10 @@ final class NonDarwinCompatibilityTests: XCTestCase {
 
         fakeGuts._finishTasksAndInvalidateCalled = {
           finishTasksAndInvalidateCalled.setValue(true)
+        }
+
+        fakeGuts._updateInternalSessionCalled = {
+          updateInternalSessionCalled.setValue(true)
         }
 
         return fakeGuts
@@ -148,6 +160,8 @@ final class NonDarwinCompatibilityTests: XCTestCase {
       XCTAssertFalse(dataTaskCalled.value)
       _ = session.dataTask(with: request)
       XCTAssertTrue(dataTaskCalled.value)
+
+      XCTAssertEqual(session, try XCTUnwrap(guts.enclosingSession))
     })
   }
 

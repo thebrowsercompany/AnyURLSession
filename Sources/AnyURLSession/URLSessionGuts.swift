@@ -18,6 +18,9 @@ public protocol URLSessionGuts: Sendable {
 
   func invalidateAndCancel()
   func finishTasksAndInvalidate()
+
+  // Used as an opportunity for whatever guts to receive the instance of URLSession that was just created.
+  func updateInternalSession(_ session: URLSession)
 }
 
 #endif
