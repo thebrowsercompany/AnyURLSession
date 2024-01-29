@@ -31,6 +31,8 @@ final class MockGutsSessionUploadTask: URLSessionUploadTask {
 final class MockGuts: URLSessionGuts {
   var configuration: URLSessionConfiguration
 
+  weak var enclosingSession: URLSession?
+
   init(configuration: URLSessionConfiguration, delegate: URLSessionDelegate?, delegateQueue queue: OperationQueue?) {
     self.configuration = configuration
   }
@@ -50,6 +52,10 @@ final class MockGuts: URLSessionGuts {
 
   func invalidateAndCancel() {}
   func finishTasksAndInvalidate() {}
+
+  func updateInternalSession(_ session: URLSession) {
+    enclosingSession = session
+  }
 }
 
 extension Dependencies {

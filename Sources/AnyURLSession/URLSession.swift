@@ -49,10 +49,17 @@ open class URLSession: NSObject {
 
   public init(configuration: URLSessionConfiguration) {
     _guts = Dependencies.current.value!.gutsFactory(configuration, nil, nil)
+
+    super.init()
+
+    _guts.updateInternalSession(self)
   }
 
   public init(configuration: URLSessionConfiguration, delegate: URLSessionDelegate?, delegateQueue queue: OperationQueue?) {
     _guts = Dependencies.current.value!.gutsFactory(configuration, delegate, queue)
+
+    super.init()
+    _guts.updateInternalSession(self)
   }
 
   open func uploadTask(with request: URLRequest, fromFile file: URL, completionHandler: @escaping @Sendable (Data?, URLResponse?, (any Error)?) -> Void) -> URLSessionUploadTask {
