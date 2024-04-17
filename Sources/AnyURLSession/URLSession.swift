@@ -83,7 +83,7 @@ open class URLSession: NSObject {
   }
 }
 
-public protocol URLSessionDelegate: NSObjectProtocol {
+public protocol URLSessionDelegate: NSObjectProtocol, Sendable {
   func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?)
   func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void)
 }
