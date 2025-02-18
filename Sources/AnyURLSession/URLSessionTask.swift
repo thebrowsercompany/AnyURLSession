@@ -1,4 +1,4 @@
-#if os(Linux) || os(Windows)
+#if os(Linux) || os(Windows) || os(Android)
 import class Foundation.NSObject
 
 // Reimplemented interfaces for URLSession that will allow for stubbing/subclassing

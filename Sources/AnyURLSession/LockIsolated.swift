@@ -1,4 +1,4 @@
-#if os(Linux) || os(Windows)
+#if os(Linux) || os(Windows) || os(Android)
 import class Foundation.NSRecursiveLock
 
 // A lightweight copy/rebuild of the LockIsolated class from Concurrency Extras
