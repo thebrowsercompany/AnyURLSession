@@ -8,7 +8,7 @@ import FoundationNetworking
 
 final class CrossPlatformCompatibilityTests: XCTestCase {
   func testForcedToSpecifyModuleToDisambiguate() async {
-    #if os(Linux) || os(Windows)
+    #if os(Linux) || os(Windows) || os(Android)
     _ = FoundationNetworking.URLSession(configuration: .default)
 
     await withDependencies({

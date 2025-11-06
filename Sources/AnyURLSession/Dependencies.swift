@@ -1,4 +1,4 @@
-#if os(Linux) || os(Windows)
+#if os(Linux) || os(Windows) || os(Android)
 import class Foundation.OperationQueue
 import class FoundationNetworking.URLSessionConfiguration
 
